@@ -97,6 +97,7 @@ div.innerHTML = `
   individualRepoData.append(div);
 };
 
+// back to gallery button
 backToGallery.addEventListener("click", function(){
     allRepoInfo.classList.remove("hide");
     individualRepoData.classList.add("hide");
