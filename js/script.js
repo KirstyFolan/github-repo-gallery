@@ -10,6 +10,11 @@ const individualRepoData = document.querySelector(".repo-data");
 //selects the unordered list of repos
 const repoList = document.querySelector(".repo-list");
 
+const backToGallery = document.querySelector(".view-repos");
+
+// selects the search input
+const filterInput = document.querySelector(".filter-repos");
+
 const getProfileData = async function() {
     const userData = await fetch (`https://api.github.com/users/${username}`);
     const data = await userData.json();
@@ -43,6 +48,7 @@ const getRepos = async function() {
 };
 
 const displayRepos = function(repos){
+    filterInput.classList.remove("hide");
 for(const repo of repos) {
     const li = document.createElement("li");
     li.classList.add("repo");
@@ -79,6 +85,7 @@ const displayRepoInfo = function(repoInfo, languages) {
 individualRepoData.innerHTML = "";
 individualRepoData.classList.remove("hide");
 allRepoInfo.classList.add("hide");
+backToGallery.classList.remove("hide");
 const div = document.createElement("div");
 div.innerHTML = `
     <h3>Name: ${repoInfo.name}</h3>
@@ -89,3 +96,26 @@ div.innerHTML = `
   `;
   individualRepoData.append(div);
 };
+
+backToGallery.addEventListener("click", function(){
+    allRepoInfo.classList.remove("hide");
+    individualRepoData.classList.add("hide");
+    backToGallery.classList.add("hide");
+});
+
+//dynamic search
+filterInput.addEventListener("input", function(e) {
+    const searchText = e.target.value;
+    //console.log(searchText);
+    const repos = document.querySelectorAll(".repo");
+    const lowerCaseSearch = searchText.toLowerCase();
+    for (const repo of repos) {
+        const searchResult = repo.innerText.toLowerCase();
+        if(searchResult.includes(lowerCaseSearch)) {
+            repo.classList.remove("hide");
+        } else {
+                repo.classList.add("hide");
+            }
+        }
+
+});
